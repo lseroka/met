@@ -17,8 +17,8 @@ https://www.kaggle.com/metmuseum/the-metropolitan-museum-of-art-open-access
 ## Package Dependencies
 
 *certifi                        2018.10.15
-chardet                        3.0.4
-defusedxml                     0.5.0
+*chardet                        3.0.4
+*defusedxml                     0.5.0
 Django                         2.1.1
 django-crispy-forms            1.7.2
 django-filter                  2.0.0
