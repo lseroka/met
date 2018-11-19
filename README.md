@@ -13,6 +13,7 @@ The dataset can be found at:
 https://www.kaggle.com/metmuseum/the-metropolitan-museum-of-art-open-access 
 
 ## Data model
-![Data Model](/static/img/met_datamodel.png)
+![Data Model](\static\img\met_datamodel.png)
+
 ## Package Dependencies
 Coming soon...
