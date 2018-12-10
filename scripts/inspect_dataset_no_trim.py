@@ -34,54 +34,49 @@ def main(argv=None):
 
 	
 	# Read in MET data set (comma separator)
-	met_csv = './scripts/input/csv/met_artwork_trimmed.csv'
+	met_csv = 'met_dataset_nov29.csv'
 	met_data_frame = read_csv(met_csv, '\t')
-	# met_data_frame_trimmed = trim_columns(met_data_frame)
-	# met_trimmed_csv = './scripts/output/master_spreadsheet_trimmed.csv'
-	# write_series_to_csv(met_data_frame_trimmed, met_trimmed_csv, '\t', False)
 	logging.info(msg[0].format(os.path.abspath(met_csv)))
 
-
-
-	#write deprtatment to a csv file
-	met_dept = extract_filtered_series(met_data_frame, 'department')
-	met_dept_tsv = './scripts/output/met_dept.tsv'
-	write_series_to_csv(met_dept, met_dept_tsv, '\t', False)
-	logging.info(msg[1].format(os.path.abspath(met_dept_tsv)))
+	# #write deprtatment to a csv file
+	# met_dept = extract_filtered_series(met_data_frame, 'Department')
+	# met_dept_tsv = './output/met_dept.tsv'
+	# write_series_to_csv(met_dept, met_dept_tsv, '\t', False)
+	# logging.info(msg[1].format(os.path.abspath(met_dept_tsv)))
 
 	# write classification to a csv file
-	met_classification = extract_filtered_series(met_data_frame, 'classification')
-	met_classification_tsv = './scripts/output/met_classification.tsv'
+	met_classification = extract_filtered_series(met_data_frame, 'Classification')
+	met_classification_tsv = './output/met_classification.tsv'
 	write_series_to_csv(met_classification, met_classification_tsv, '\t', False)
 	logging.info(msg[2].format(os.path.abspath(met_classification_tsv)))
 
-	# #write acquisition to a csv file 
-	# met_acquisition = extract_filtered_series(met_data_frame_trimmed, 'acquisition')
-	# met_acquisition_tsv = './scripts/output/met_acquisition.tsv'
-	# write_series_to_csv(met_acquisition, met_acquisition_tsv, '\t', False)
-	# logging.info(msg[3].format(os.path.abspath(met_acquisition_tsv)))
+	#write acquisition to a csv file 
+	met_acquisition = extract_filtered_series(met_data_frame, 'Acquisition')
+	met_acquisition_tsv = './output/met_acquisition.tsv'
+	write_series_to_csv(met_acquisition, met_acquisition_tsv, '\t', False)
+	logging.info(msg[3].format(os.path.abspath(met_acquisition_tsv)))
 
 	#write city to a csv file
-	met_city = extract_filtered_series(met_data_frame, 'city')
-	met_city_tsv = './scripts/output/met_city.tsv'
+	met_city = extract_filtered_series(met_data_frame, 'City')
+	met_city_tsv = './output/met_city.tsv'
 	write_series_to_csv(met_city, met_city_tsv, '\t', False)
 	logging.info(msg[4].format(os.path.abspath(met_city_tsv)))
 
 	#write country to a csv file
-	met_country = extract_filtered_series(met_data_frame, 'country')
-	met_country_tsv = './scripts/output/met_country.tsv'
+	met_country = extract_filtered_series(met_data_frame, 'Country')
+	met_country_tsv = './output/met_country.tsv'
 	write_series_to_csv(met_country, met_country_tsv, '\t', False)
 	logging.info(msg[5].format(os.path.abspath(met_country_tsv)))
 
 	#write region to a csv file
-	met_region = extract_filtered_series(met_data_frame, 'region')
-	met_region_tsv = './scripts/output/met_region.tsv'
+	met_region = extract_filtered_series(met_data_frame, 'Region')
+	met_region_tsv = './output/met_region.tsv'
 	write_series_to_csv(met_region, met_region_tsv, '\t', False)
 	logging.info(msg[6].format(os.path.abspath(met_region_tsv)))
 
 	#write object title to a csv file
-	met_title = extract_filtered_series(met_data_frame, 'object_title')
-	met_title_tsv = './scripts/output/met_title.tsv'
+	met_title = extract_filtered_series(met_data_frame, 'Title')
+	met_title_tsv = './output/met_title.tsv'
 	write_series_to_csv(met_title, met_title_tsv, '\t', False)
 	logging.info(msg[7].format(os.path.abspath(met_title_tsv)))
  
@@ -190,14 +185,6 @@ def read_csv(path, delimiter=','):
 	"""
 	return pd.read_csv(path, sep=delimiter, encoding= "ISO-8859-1", engine='python')
 
-
-def trim_columns(data_frame):
-	"""
-	:param data_frame:
-	:return: trimmed data frame
-	"""
-	trim = lambda x: x.strip() if type(x) is str else x
-	return data_frame.applymap(trim)
 
 def write_series_to_csv(series, path, delimiter=',', row_name=True):
 	"""

@@ -1,0 +1,12 @@
+{% extends 'met/base.html' %}
+{% block content %}
+
+
+  <form method="post">
+    {% csrf_token %}
+    <p>Are you sure you want to delete the Artwork "{{ arts.title }}"?</p>
+    <button type="submit" class="btn btn-outline-danger">delete</button>
+    <a class="btn btn-outline-secondary" href="{% url 'art' arts.pk 
+    %}">cancel</a>
+  </form>
+{% endblock content %}

@@ -3,5 +3,5 @@ mysql:
   port: 3306
   user: lseroka
   passwd: Swimchick1!
-  db: met
+  db: met_art
   local_infile: True

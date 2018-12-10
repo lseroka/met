@@ -1,0 +1,41 @@
+{% extends 'met/base.html' %} 
+{% block content %}
+{% if user.is_authenticated %}
+<article>
+  
+<header>
+  <div class="row">
+    <div class="col-sm-11">
+      <h2>MET Artwork</h2>
+    </div>
+
+    </div>
+  </div>
+</header>
+
+ {% include 'met/pagination.html' %}
+  
+  {% if arts %}
+  <ul>
+    <!--Lauren added for loops-->
+    {% for art in arts %}
+
+
+    <!-- safe filter on for raw HTML stored in database -->
+    <li><a href="{% url 'art_detail' art.pk %}">{{ art.title | safe }}</a></li>
+    {% endfor %}
+
+
+  </ul>
+  {% else %}
+  <p>No Artwork is available to view.</p>
+  {% endif %}
+
+  <p>page count: {{ arts.count }}</p>
+</article>
+{% else %}
+    <a href="{% url 'login' %}">Log in</a>
+
+  {% endif %}
+
+{% endblock content %}}

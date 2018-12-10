@@ -1,7 +1,0 @@
-mysql:
-  host: localhost
-  port: 3306
-  user: lseroka
-  passwd: Swimchick1!
-  db: met
-  local_infile: True

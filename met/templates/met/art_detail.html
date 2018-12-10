@@ -1,0 +1,199 @@
+
+{% extends 'met/base.html' %}
+{% block content %}
+{% if user.is_authenticated %}
+     <header>
+       <div class="row">
+         <div class="col-sm-10">
+           <h2>{{ art.title | safe }} ({{ art.accession_number | safe }})</h2>
+         </div>
+      
+       </div>
+     </header>
+
+
+
+  {% if art.is_public_domain %}
+    <div class="row">
+      <div class="col-sm-2">
+        <p>Public Domain</p>
+      </div>
+      <div class="col-sm-10">
+        <p>{{ art.is_public_domain }}</p>
+      </div>
+    </div>
+  {% endif %}
+
+  {% if art.artwork_type %}
+    <div class="row">
+      <div class="col-sm-2">
+        <p>Type</p>
+      </div>
+      <div class="col-sm-10">
+        <p>{{ art.artwork_type }}</p>
+      </div>
+    </div>
+  {% endif %}
+
+
+
+  {% if art.year_begin_end %}
+    <div class="row">
+      <div class="col-sm-2">
+        <p>Date</p>
+      </div>
+      <div class="col-sm-10">
+        <p>{{ art.year_begin_end }}</p>
+      </div>
+    </div>
+  {% endif %}
+
+
+ {% if art.medium %}
+    <div class="row">
+      <div class="col-sm-2">
+        <p>Medium</p>
+      </div>
+      <div class="col-sm-10">
+        <p>{{ art.medium }}</p>
+      </div>
+    </div>
+  {% endif %}
+
+
+
+  {% if art.classification %}
+    <div class="row">
+      <div class="col-sm-2">
+        <p>Classification</p>
+      </div>
+      <div class="col-sm-10">
+        <p>{{ art.classification }}</p>
+      </div>
+    </div>
+  {% endif %}
+
+
+ {% if art.dimensions %}
+    <div class="row">
+      <div class="col-sm-2">
+        <p>Dimensions</p>
+      </div>
+      <div class="col-sm-10">
+        <p>{{ art.dimensions }}</p>
+      </div>
+    </div>
+  {% endif %}
+
+
+ {% if art.city %}
+    <div class="row">
+      <div class="col-sm-2">
+        <p>City</p>
+      </div>
+      <div class="col-sm-10">
+        <p>{{ art.city }}</p>
+      </div>
+    </div>
+  {% endif %}
+
+
+  {% if art.country %}
+    <div class="row">
+      <div class="col-sm-2">
+        <p>Country</p>
+      </div>
+      <div class="col-sm-10">
+        <p>{{ art.country }}</p>
+      </div>
+    </div>
+  {% endif %}
+
+
+ {% if art.region %}
+    <div class="row">
+      <div class="col-sm-2">
+        <p>Region/p>
+      </div>
+      <div class="col-sm-10">
+        <p>{{ art.region }}</p>
+      </div>
+    </div>
+  {% endif %}
+
+
+
+   {% if art.acquired_from %}
+    <div class="row">
+      <div class="col-sm-2">
+        <p>Credit Line</p>
+      </div>
+      <div class="col-sm-10">
+        <p>{{ art.acquired_from }}</p>
+      </div>
+    </div>
+  {% endif %}
+
+
+  {% if art.department %}
+    <div class="row">
+      <div class="col-sm-2">
+        <p>MET Department</p>
+      </div>
+      <div class="col-sm-10">
+        <p>{{ art.department }}</p>
+      </div>
+    </div>
+  {% endif %}
+
+
+  {% if art.repository %}
+    <div class="row">
+      <div class="col-sm-2">
+        <p>Repository</p>
+      </div>
+      <div class="col-sm-10">
+        <p>{{ art.repository }}</p>
+      </div>
+    </div>
+  {% endif %}
+
+  {% if art.resource_link %}
+    <div class="row">
+      <div class="col-sm-2">
+        <p>Online</p>
+      </div>
+      <div class="col-sm-10">
+        <p>{{ art.resource_link }}</p>
+      </div>
+    </div>
+  {% endif %}
+
+
+  {% if art.rights_and_reproduction %}
+    <div class="row">
+      <div class="col-sm-2">
+        <p>Rights and Reproduction</p>
+      </div>
+      <div class="col-sm-10">
+        <a class="nav-link" href="{{ art.rights_and_reproduction }}"> Explore Online</a>
+      </div>
+    </div>
+  {% endif %}
+
+
+
+
+
+
+
+
+
+
+{% else %}
+      <a href="{% url 'login' %}">Log in</a>
+    {% endif %}
+
+
+
+{% endblock content %}

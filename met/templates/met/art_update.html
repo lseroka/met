@@ -1,0 +1,143 @@
+<!-- Restore missing template tags -->
+{% extends 'met/base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+  <header>
+    <h2>Art Update</h2>
+  </header>
+
+  <!-- novalidate attribute required to render validation messages -->
+  <form method="post" novalidate>
+  {% csrf_token %}
+
+
+
+    <div class="row">
+      <div class="col-6">
+        {{ form.accession_number|as_crispy_field }}
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-6">
+        {{ form.is_public_domain|as_crispy_field }}
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-6">
+        {{ form.department|as_crispy_field }}
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-6">
+        {{ form.classification|as_crispy_field }}
+      </div>
+    </div>
+
+
+    <div class="row">
+      <div class="col-6">
+        {{ form.artwork_type|as_crispy_field }}
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-6">
+        {{ form.title|as_crispy_field }}
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-6">
+        {{ form.year_begin_end|as_crispy_field }}
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-6">
+        {{ form.year_begin|as_crispy_field }}
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-6">
+        {{ form.year_end|as_crispy_field }}
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-6">
+        {{ form.medium|as_crispy_field }}
+      </div>
+    </div>
+    
+    <div class="row">
+      <div class="col-6">
+        {{ form.dimensions|as_crispy_field }}
+      </div>
+    </div>
+    
+    <div class="row">
+      <div class="col-6">
+        {{ form.acquired_from|as_crispy_field }}
+      </div>
+    </div>
+
+     <div class="row">
+      <div class="col-6">
+        {{ form.city|as_crispy_field }}
+      </div>
+    </div>
+
+     <div class="row">
+      <div class="col-6">
+        {{ form.city|as_crispy_field }}
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-6">
+        {{ form.countru|as_crispy_field }}
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-6">
+        {{ form.region|as_crispy_field }}
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-6">
+        {{ form.resource_link|as_crispy_field }}
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-6">
+        {{ form.rights_and_reproduction|as_crispy_field }}
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-6">
+        {{ form.repository|as_crispy_field }}
+      </div>
+    </div>
+
+
+
+
+   <button type="submit" class="btn btn-outline-success">Update</button>
+  
+  <!-- Restore missing button -->
+    &nbsp;<a class="btn btn-outline-secondary" href="{% url 'arts' %}">cancel</a>
+
+</form>
+
+{% endblock content %}
