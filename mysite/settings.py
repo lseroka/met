@@ -165,5 +165,9 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
-TEST_RUNNER = 'met.utils.UnManagedModelTestRunner'
+
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+
+
+TEST_RUNNER = 'met.utils.UnManagedModelTestRunner'

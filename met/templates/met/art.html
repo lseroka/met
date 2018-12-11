@@ -1,17 +1,21 @@
 {% extends 'met/base.html' %} 
 {% block content %}
 {% if user.is_authenticated %}
-<article>
-  
-<header>
-  <div class="row">
-    <div class="col-sm-11">
-      <h2>MET Artwork</h2>
-    </div>
 
+<article>
+  <header>
+    <div class="row">
+      <div class="col-sm-11">
+        <h2>MET Artwork</h2>
+      </div>
+      <div class="col-sm-1">
+        <a class="btn btn-outline-secondary" href="{% url 'art_new' %}">New</a>
+      </div>
     </div>
-  </div>
-</header>
+  </header>
+
+
+
 
  {% include 'met/pagination.html' %}
   
@@ -33,6 +37,7 @@
 
   <p>page count: {{ arts.count }}</p>
 </article>
+
 {% else %}
     <a href="{% url 'login' %}">Log in</a>
 

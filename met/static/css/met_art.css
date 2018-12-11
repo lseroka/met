@@ -29,7 +29,7 @@ nav {
 .navbar-custom .navbar-brand,
 .navbar-custom .navbar-text {
     color: rgba(255,255,255,.8);
-    /* padding: 0.8rem 1rem; */
+     padding: 0.8rem 1rem; 
 }
 /* change the link color */
 .navbar-custom .navbar-nav .nav-link {

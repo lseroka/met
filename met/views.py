@@ -4,12 +4,14 @@ from django.views import generic
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.urls import reverse, reverse_lazy, resolve
-# from django_filters.views import FilterView
+from django_filters.views import FilterView
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
+
 
 
 from .models import Artwork
 from .forms import ArtworkForm
-# from .filters import HeritageSiteFilter
+from .filters import ArtworkFilter
 
 # Create your views here.
 def index(request):
@@ -63,6 +65,10 @@ class ArtDetailView(generic.DetailView):
 	def dispatch(self, *args, **kwargs):
 		return super().dispatch(*args, **kwargs)
 
+	def get_object(self):
+		artwork = super().get_object()
+		return artwork
+
 
 
 
@@ -74,7 +80,7 @@ class ArtCreateView(generic.View):
 	model = Artwork
 	form_class = ArtworkForm
 	success_message = "Artwork created successfully"
-	template_name = 'met/site_new.html'
+	template_name = 'met/art_new.html'
 	# fields = '__all__' <-- superseded by form_class
 	# success_url = reverse_lazy('heritagesites/site_list')
 
@@ -180,5 +186,5 @@ class ArtDeleteView(generic.DeleteView):
 
 
 class ArtFilterView(FilterView):
-	filterset_class = ArtSiteFilter
+	filterset_class = ArtworkFilter
 	template_name = 'met/art_filter.html'

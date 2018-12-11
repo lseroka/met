@@ -46,7 +46,93 @@ class Artwork(models.Model):
     def get_absolute_url(self):
         return reverse('art_detail', kwargs={'pk': self.pk})
 
+    @property
+    def region_names(self):
+        """
+        Returns a list of UNSD regions (names only) associated with a Heritage Site.
+            Note that not all Heritage Sites are associated with a region. In such cases the
+            Queryset will return as <QuerySet [None]> and the list will need to be checked for
+            None or a TypeError (sequence item 0: expected str instance, NoneType found) runtime
+            error will be thrown.
+            :return: string
+        """
 
+        # Add code that uses self to retrieve a QuerySet composed of regions, then loops over it
+        # building a list of region names, before returning a comma-delimited string of names.
+        artwork = self.artwork.all().order_by('region__region_name')
+
+
+        regions = []
+        for each in artwork:
+            region = each.region.region_name
+            if region is None:
+                continue
+            if region not in regions:
+                regions.append(region) 
+
+
+        return ', '.join(regions)
+
+    @property
+    def country_names(self):
+        """
+        Returns a list of UNSD subregions (names only) associated with a Heritage Site.
+        Note that not all Heritage Sites are associated with a subregion. In such cases the
+        Queryset will return as <QuerySet [None]> and the list will need to be checked for
+        None or a TypeError (sequence item 0: expected str instance, NoneType found) runtime
+        error will be thrown.
+        :return: string
+        """
+
+        # Add code that uses self to retrieve a QuerySet, then loops over it building a list of
+        # sub region names, before returning a comma-delimited string of names using the string
+        # join method.
+        
+        artwork = self.artwork.all().order_by('country__country_name')
+
+        countries = []
+
+        for each in artwork:
+            country = each.country.country_name
+            if country is None:
+                continue
+            if country not in countries:
+                countries.append(country) 
+
+        return ', '.join(countries)
+        
+
+
+    @property
+    def city_names(self):
+        """
+        Returns a list of UNSD intermediate regions (names only) associated with a Heritage Site.
+        Note that not all Heritage Sites are associated with an intermediate region. In such
+        cases the Queryset will return as <QuerySet [None]> and the list will need to be
+        checked for None or a TypeError (sequence item 0: expected str instance, NoneType found)
+        runtime error will be thrown.
+        :return: string
+        """
+
+        # Add code that uses self to retrieve a QuerySet, then loops over it building a list of
+        # intermediate region names, before returning a comma-delimited string of names using the
+        # string join method.
+        artwork = self.artwork.all().order_by('city__city_name')
+
+        cities = []
+        
+        try:
+            for each in artwork:
+                city = each.city.city_name
+                if city is None:
+                    continue
+                if city not in cities:
+                    cities.append(city) 
+
+            return ', '.join(cities)
+        
+        except:
+            pass 
 
 
 class ArtworkType(models.Model):
@@ -164,8 +250,7 @@ class Repository(models.Model):
 #NEED TO ADD DECORATORS. ADD ARTISTS TO TO EACH TITLE; WILL BE COMMA SEPARATED WITH THEIR ROLE AND NATIONALITY IN ()S) 
 
 
-
-
+   
 
 
 
