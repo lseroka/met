@@ -4,9 +4,9 @@
 
   <form method="post">
     {% csrf_token %}
-    <p>Are you sure you want to delete the Artwork "{{ arts.title }}"?</p>
-    <button type="submit" class="btn btn-outline-danger">delete</button>
-    <a class="btn btn-outline-secondary" href="{% url 'art' arts.pk 
+    <p>Are you sure you want to delete the Artwork "{{ art.title }}"?</p>
+    <button type="submit" class="btn btn-outline-danger">Delete</button>
+    <a class="btn btn-outline-secondary" href="{% url 'art' art.pk 
     %}">cancel</a>
   </form>
 {% endblock content %}

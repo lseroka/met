@@ -10,75 +10,14 @@ from django.urls import reverse
 import yaml
 
 
-class Artist(models.Model):
-    artist_id = models.AutoField(primary_key=True)
-    artist_display_name =  models.CharField(unique=True, max_length=255)
-
-    class Meta:
-        managed = False
-        db_table = 'artist'
-        ordering = ['artist_display_name']
-        verbose_name = 'Artist Name'
-        verbose_name_plural = 'Artist Names'
-
-    def __str__(self):
-        return self.artist_display_name   
-
-
-class ArtistRole(models.Model):
-    artist_role_id = models.AutoField(primary_key=True)
-    artist_role =  models.CharField(unique=True, max_length=100)
-
-    class Meta:
-        managed = False
-        db_table = 'artist_role'
-        ordering = ['artist_role']
-        verbose_name = 'Artist Role'
-        verbose_name_plural = 'Artists Roles'
-
-    def __str__(self):
-        return self.artist_role 
-
-
-class ArtworkAttribution(models.Model):
-    artwork_attribution_id = models.AutoField(primary_key=True)
-    artwork_attribution =  models.CharField(unique=True, max_length=100)
-
-    class Meta:
-        managed = False
-        db_table = 'artwork_attribution'
-        ordering = ['artwork_attribution']
-        verbose_name = 'Artwork Attribution'
-        verbose_name_plural = 'Artwork Attributions'
-
-    def __str__(self):
-        return self.artwork_attribution 
-
-
-class ArtworkArtist(models.Model):
-    artwork_artist_id = models.AutoField(primary_key=True)
-    artwork = models.ForeignKey('Artwork', on_delete=models.CASCADE, blank=True, null=True)
-    artwork_attribution = models.ForeignKey('ArtworkAttribution', models.DO_NOTHING, blank=True, null=True)
-    artwork_artist_index = models.IntegerField()
-    artist = models.ForeignKey('Artist', on_delete=models.CASCADE, blank=True, null=True)
-    artist_role = models.ForeignKey('ArtistRole', on_delete=models.CASCADE, blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'artwork_artist'
-        ordering = ['artwork', 'artist']
-        verbose_name = 'Artwork Artist'
-        verbose_name_plural = 'Artwork Artists'
-
-
 
 class Artwork(models.Model):
     artwork_id = models.AutoField(primary_key=True)
     accession_number = models.CharField(max_length=75)
     is_public_domain = models.CharField(max_length=5)
-    department = models.ForeignKey('Department', on_delete=models.PROTECT)
-    classification = models.ForeignKey('Classification', on_delete=models.PROTECT, blank=True, null=True)
-    artwork_type = models.ForeignKey('ArtworkType', on_delete=models.PROTECT, blank=True, null=True)
+    department = models.ForeignKey('Department', models.DO_NOTHING)
+    classification = models.ForeignKey('Classification', models.DO_NOTHING, blank=True, null=True)
+    artwork_type = models.ForeignKey('ArtworkType', models.DO_NOTHING, blank=True, null=True)
     title = models.CharField(max_length=500)
     year_begin_end = models.CharField(max_length=255, blank=True, null=True)
     year_begin = models.IntegerField(blank=True, null=True)
@@ -86,14 +25,12 @@ class Artwork(models.Model):
     medium = models.CharField(max_length=500, blank=True, null=True)
     dimensions = models.CharField(max_length=750, blank=True, null=True)
     acquired_from = models.CharField(max_length=1000, blank=True, null=True)
-    city = models.ForeignKey('City', on_delete=models.PROTECT, blank=True, null=True)
-    country = models.ForeignKey('Country', on_delete=models.PROTECT, blank=True, null=True)
-    region = models.ForeignKey('Region', on_delete=models.PROTECT, blank=True, null=True)
+    city = models.ForeignKey('City', models.DO_NOTHING, blank=True, null=True)
+    country = models.ForeignKey('Country', models.DO_NOTHING, blank=True, null=True)
+    region = models.ForeignKey('Region', models.DO_NOTHING, blank=True, null=True)
     resource_link = models.CharField(max_length=255, blank=True, null=True)
     rights_and_reproduction = models.CharField(max_length=255, blank=True, null=True)
-    repository = models.ForeignKey('Repository', on_delete=models.PROTECT, blank=True, null=True)
-
-    artist = models.ManyToManyField(Artist, through = 'ArtworkArtist')
+    repository = models.ForeignKey('Repository', models.DO_NOTHING, blank=True, null=True)
 
     class Meta:
         managed = False
@@ -197,43 +134,6 @@ class Artwork(models.Model):
         except:
             pass 
 
-    @property
-    def artist_names(self):
-        """
-        Returns a list of UNSD subregions (names only) associated with a Heritage Site.
-        Note that not all Heritage Sites are associated with a subregion. In such cases the
-        Queryset will return as <QuerySet [None]> and the list will need to be checked for
-        None or a TypeError (sequence item 0: expected str instance, NoneType found) runtime
-        error will be thrown.
-        :return: string
-        """
-
-        # Add code that uses self to retrieve a QuerySet, then loops over it building a list of
-        # sub region names, before returning a comma-delimited string of names using the string
-        # join method.
-        
-        artwork = self.artist.all().order_by('artist_display_name')
-
-        artists = []
-
-        for each in artwork:
-            artist = each.artist.artist_name
-            if artist is None:
-                continue
-            if artist not in artists:
-                artists.append(country) 
-
-        return ', '.join(artists)
-
-
-
-
-
-
-
-
-
-
 
 class ArtworkType(models.Model):
     artwork_type_id = models.AutoField(primary_key=True)
@@ -254,7 +154,7 @@ class ArtworkType(models.Model):
 class City(models.Model):
     city_id = models.AutoField(primary_key=True)
     city_name = models.CharField(unique=True, max_length=255)
-    country = models.ForeignKey('Country', on_delete=models.PROTECT, blank=True, null=True)
+    country = models.ForeignKey('Country', models.DO_NOTHING, blank=True, null=True)
 
     class Meta:
         managed = False
@@ -315,7 +215,7 @@ class Classification(models.Model):
 class Region(models.Model):
     region_id = models.AutoField(primary_key=True)
     region_name = models.CharField(unique=True, max_length=255)
-    country = models.ForeignKey(Country, on_delete=models.PROTECT, blank=True, null=True)
+    country = models.ForeignKey(Country, models.DO_NOTHING, blank=True, null=True)
 
     class Meta:
         managed = False
@@ -347,13 +247,10 @@ class Repository(models.Model):
 
 
 
-
-
-
-
 #NEED TO ADD DECORATORS. ADD ARTISTS TO TO EACH TITLE; WILL BE COMMA SEPARATED WITH THEIR ROLE AND NATIONALITY IN ()S) 
 
 
+   
 
 
 
@@ -373,3 +270,61 @@ class Repository(models.Model):
 
 
 
+
+
+# class TempArtwork(models.Model):
+#     temp_artwork_id = models.AutoField(primary_key=True)
+#     accession_number = models.CharField(max_length=50, blank=True, null=True)
+#     is_public_domain = models.CharField(max_length=5, blank=True, null=True)
+#     department_name = models.CharField(max_length=75, blank=True, null=True)
+#     artwork_type_name = models.CharField(max_length=255, blank=True, null=True)
+#     title = models.CharField(max_length=500, blank=True, null=True)
+#     culture = models.CharField(max_length=255, blank=True, null=True)
+#     year_begin_end = models.CharField(max_length=255, blank=True, null=True)
+#     year_begin = models.CharField(max_length=10, blank=True, null=True)
+#     year_end = models.CharField(max_length=10, blank=True, null=True)
+#     medium = models.CharField(max_length=500, blank=True, null=True)
+#     dimensions = models.CharField(max_length=750, blank=True, null=True)
+#     acquired_from = models.CharField(max_length=1000, blank=True, null=True)
+#     city_name = models.CharField(max_length=255, blank=True, null=True)
+#     state_name = models.CharField(max_length=255, blank=True, null=True)
+#     county_name = models.CharField(max_length=255, blank=True, null=True)
+#     country_name = models.CharField(max_length=255, blank=True, null=True)
+#     region_name = models.CharField(max_length=255, blank=True, null=True)
+#     classification_name = models.CharField(max_length=100, blank=True, null=True)
+#     rights_and_reproduction = models.CharField(max_length=255, blank=True, null=True)
+#     resource_link = models.CharField(max_length=255, blank=True, null=True)
+#     repository_name = models.CharField(max_length=100, blank=True, null=True)
+
+#     class Meta:
+#         managed = False
+#         db_table = 'temp_artwork'
+
+
+# class TempCity(models.Model):
+#     temp_city_id = models.AutoField(primary_key=True)
+#     city_name = models.CharField(unique=True, max_length=255)
+#     country_name = models.CharField(max_length=255, blank=True, null=True)
+
+#     class Meta:
+#         managed = False
+#         db_table = 'temp_city'
+
+
+# class TempClassification(models.Model):
+#     temp_classification_id = models.AutoField(primary_key=True)
+#     classification_name = models.CharField(unique=True, max_length=255)
+
+#     class Meta:
+#         managed = False
+#         db_table = 'temp_classification'
+
+
+# class TempRegion(models.Model):
+#     temp_region_id = models.AutoField(primary_key=True)
+#     region_name = models.CharField(unique=True, max_length=255)
+#     country_name = models.CharField(max_length=255, blank=True, null=True)
+
+#     class Meta:
+#         managed = False
+#         db_table = 'temp_region'

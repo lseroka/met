@@ -24,10 +24,6 @@
 
 
 
-
- 
-
-
     <div class="row">
       <div class="col-6">
         {{ form.accession_number|as_crispy_field }}
@@ -115,7 +111,7 @@
 
     <div class="row">
       <div class="col-6">
-        {{ form.countru|as_crispy_field }}
+        {{ form.country|as_crispy_field }}
       </div>
     </div>
 
@@ -146,7 +142,7 @@
 
 
     <button type="submit" class="btn btn-outline-success">Add</button>
-    &nbsp;<a class="btn btn-outline-secondary" href="{% url 'arts' %}">cancel</a>
+    &nbsp;<a class="btn btn-outline-secondary" href="{% url 'art' %}">Cancel</a>
   </form>
 
 {% endblock content %}

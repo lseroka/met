@@ -5,6 +5,7 @@
 body {
     background-color: #F3E0DC;
     /*background-image: url("met.jpg");*/
+    padding: 0.8rem 0rem; 
 }
 
 /*
@@ -34,7 +35,7 @@ nav {
 /* change the link color */
 .navbar-custom .navbar-nav .nav-link {
     color: rgba(255,255,255,.8);
-    /* padding: 1rem 1rem; */
+     padding: 1rem 1rem; 
 }
 /* change the color of active or hovered links */
 .navbar-custom .nav-item.active .nav-link,
@@ -54,6 +55,7 @@ nav {
     color: #D4A59A;
     font-size: 0.75rem;
     text-decoration: none;
+    width: max-content;
 }
 
 .pagination .page-item.active span.page-link {
@@ -62,6 +64,7 @@ nav {
     color: #F3E0DC;
     font-size: 0.75rem;
     text-decoration: none;
+/*    width: min-content;*/
 }
 
 /*
@@ -74,7 +77,7 @@ main {
 
 .container-fluid {
     background-color: transparent;
-    /* padding: 0.5rem 0.5rem; */
+     padding: 0.5rem 0.5rem; 
 }
 
 /*

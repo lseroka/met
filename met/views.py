@@ -8,7 +8,6 @@ from django_filters.views import FilterView
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 
 
-
 from .models import Artwork
 from .forms import ArtworkForm
 from .filters import ArtworkFilter
@@ -121,17 +120,15 @@ class ArtUpdateView(generic.UpdateView):
 		art = form.save(commit=False)
 		# site.updated_by = self.request.user
 		# site.date_updated = timezone.now()
-		art.save()
+		# art.save()
 
-		# Current country_area_id values linked to site
-		# old_ids = HeritageSiteJurisdiction.objects\
-		# 	.values_list('country_area_id', flat=True)\
-		# 	.filter(heritage_site_id=site.heritage_site_id)
+		# # Current country_area_id values linked to site
+		# old_ids = Artwork.objects.all().filter(artwork_id = art.artwork_id)
 
-		# New countries list
+		# # New countries list
 		# new_art = form.cleaned_data['country_area']
 
-		# # TODO can these loops be refactored?
+		# # # TODO can these loops be refactored?
 
 		# # New ids
 		# new_ids = []
@@ -163,7 +160,7 @@ class ArtUpdateView(generic.UpdateView):
 class ArtDeleteView(generic.DeleteView):
 	model = Artwork
 	success_message = "Artwork deleted successfully"
-	success_url = reverse_lazy('arts')
+	success_url = reverse_lazy('art')
 	context_object_name = 'art'
 	template_name = 'met/art_delete.html'
 
@@ -177,14 +174,37 @@ class ArtDeleteView(generic.DeleteView):
 		# HeritageSiteJurisdiction.objects \
 		# 	.filter(heritage_site_id=self.object.heritage_site_id) \
 		# 	.delete()
+		Artwork.objects.filter(artwork_id = self.object.artwork_id.delete())
 
-		# self.object.delete()
+		self.object.delete()
 
 		return HttpResponseRedirect(self.get_success_url())		
 
 
 
 
-class ArtFilterView(FilterView):
+
+
+
+
+class PaginatedFilterView(generic.View):
+	"""
+	Creates a view mixin, which separates out default 'page' keyword and returns the
+	remaining querystring as a new template context variable.
+	https://stackoverflow.com/questions/51389848/how-can-i-use-pagination-with-django-filter
+	"""
+	def get_context_data(self, **kwargs):
+		context = super(PaginatedFilterView, self).get_context_data(**kwargs)
+		if self.request.GET:
+			querystring = self.request.GET.copy()
+			if self.request.GET.get('page'):
+				del querystring['page']
+			context['querystring'] = querystring.urlencode()
+		return context	
+
+
+
+class ArtFilterView(PaginatedFilterView, FilterView):
 	filterset_class = ArtworkFilter
 	template_name = 'met/art_filter.html'
+	paginate_by = 20

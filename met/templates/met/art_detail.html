@@ -26,7 +26,16 @@
   </header>
 
 
-
+  {% if art.artist_names %}
+    <div class="row">
+      <div class="col-sm-2">
+        <p>Artist</p>
+      </div>
+      <div class="col-sm-10">
+        <p>{{ art.artist_names }}</p>
+      </div>
+    </div>
+  {% endif %}
 
 
   {% if art.is_public_domain %}

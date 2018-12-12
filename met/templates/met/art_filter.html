@@ -20,11 +20,13 @@
 <!-- could include a count -->
     <div class="col-sm-9">
 
-    {% include 'met/pagination.html' %}
+    
 
 
     
       <h2>Select one or more filters relevant to your search and then click "filter".</h2>
+
+      {% include 'met/pagination.html' %}
 
       {% for art in object_list %}
 

@@ -102,3 +102,24 @@ class RepositoryAdmin(admin.ModelAdmin):
 	fields = ['repository_name']
 	list_display = ['repository_name']
 	ordering = ['repository_name']
+
+
+@admin.register(models.Artist)
+class ArtistAdmin(admin.ModelAdmin):
+	fields = ['artist_display_name']
+	list_display = ['artist_display_name']
+	ordering = ['artist_display_name']
+
+
+@admin.register(models.ArtistRole)
+class ArtistRoleAdmin(admin.ModelAdmin):
+	fields = ['artist_role']
+	list_display = ['artist_role']
+	ordering = ['artist_role']
+
+
+@admin.register(models.ArtworkAttribution)
+class ArtworkAttributionAdmin(admin.ModelAdmin):
+	fields = ['artwork_attribution']
+	list_display = ['artwork_attribution']
+	ordering = ['artwork_attribution']
