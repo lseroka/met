@@ -104,41 +104,38 @@ class ArtUpdateView(generic.UpdateView):
 		art = form.save(commit=False)
 		# site.updated_by = self.request.user
 		# site.date_updated = timezone.now()
-		# art.save()
+		art.save()
 
-		# # Current country_area_id values linked to site
-		# old_ids = Artwork.objects.all().filter(artwork_id = art.artwork_id)
+		# If any existing country/areas are not in updated list, delete them
+		new_ids = []
+		old_ids = ArtworkArtist.objects\
+			.values_list('artist_id', flat=True)\
+			.filter(artwork_id=art.artwork_id)
 
-		# # New countries list
-		# new_art = form.cleaned_data['country_area']
+		# New artist list
+		new_artists = form.cleaned_data['artists']
 
-		# # # TODO can these loops be refactored?
-
-		# # New ids
-		# new_ids = []
-
-		# # Insert new unmatched country entries
-		# for country in new_countries:
-		# 	new_id = country.country_area_id
-		# 	new_ids.append(new_id)
-		# 	if new_id in old_ids:
-		# 		continue
-		# 	else:
-		# 		HeritageSiteJurisdiction.objects \
-		# 			.create(heritage_site=site, country_area=country)
+		# Insert new unmatched country entries
+		for artist in new_artists:
+			new_id = artist.artist_id
+			new_ids.append(new_id)
+			if new_id in old_ids:
+				continue
+			else:
+				ArtworkArtist.objects \
+					.create(artwork=art, artist=artist)
 
 		# Delete old unmatched country entries
-		# for old_id in old_ids:
-		# 	if old_id in new_ids:
-		# 		continue
-		# 	else:
-		# 		HeritageSiteJurisdiction.objects \
-		# 			.filter(heritage_site_id=site.heritage_site_id, country_area_id=old_id) \
-		# 			.delete()
+		for old_id in old_ids:
+			if old_id in new_ids:
+				continue
+			else:
+				ArtworkArtist.objects \
+					.filter(artwork_id=art.artwork_id, artist_id=old_id) \
+					.delete()
 
 		return HttpResponseRedirect(art.get_absolute_url())
-		# return redirect('heritagesites/site_detail', pk=site.pk
-
+		# return redirect('heritagesites/site_detail', pk=site.pk)
 
 @method_decorator(login_required, name='dispatch')
 class ArtDeleteView(generic.DeleteView):
