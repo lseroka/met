@@ -8,7 +8,7 @@ from django_filters.views import FilterView
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 
 
-from .models import Artwork
+from .models import Artwork, ArtworkArtist
 from .forms import ArtworkForm
 from .filters import ArtworkFilter
 
@@ -24,23 +24,6 @@ class HomePageView(generic.TemplateView):
 	template_name = 'met/home.html'
 
 
-class ArtListView(generic.ListView):
-	model = Artwork
-	context_object_name = 'arts'
-	template_name = 'met/art.html'
-	paginate_by = 50
-
-	def get_queryset(self):
-		return Artwork.objects.all().order_by('title')
-
-
-class ArtDetailView(generic.DetailView):
-	model = Artwork
-	context_object_name = 'art'
-	template_name = 'met/art_detail.html'
-
-
-
 @method_decorator(login_required, name='dispatch')
 class ArtListView(generic.ListView):
 	model = Artwork
@@ -53,6 +36,7 @@ class ArtListView(generic.ListView):
 
 	def get_queryset(self):
 		return Artwork.objects.all().order_by('title')
+
 
 
 @method_decorator(login_required, name='dispatch')
@@ -174,7 +158,7 @@ class ArtDeleteView(generic.DeleteView):
 		# HeritageSiteJurisdiction.objects \
 		# 	.filter(heritage_site_id=self.object.heritage_site_id) \
 		# 	.delete()
-		Artwork.objects.filter(artwork_id = self.object.artwork_id.delete())
+		ArtworkArtist.objects.filter(artwork_id = self.object.artwork_id).delete()
 
 		self.object.delete()
 
