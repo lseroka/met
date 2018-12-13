@@ -75,8 +75,12 @@ class ArtCreateView(generic.View):
 		if form.is_valid():
 			art = form.save(commit=False)
 			art.save()
-			# for country in form.cleaned_data['country_area']:
-			# 	HeritageSiteJurisdiction.objects.create(heritage_site=site, country_area=country)
+			i = 0
+			for artist in form.cleaned_data['artist']:
+
+				ArtworkArtist.objects.create(artwork=art, artist=artist, artwork_artist_index=i)
+				i+=1
+			
 			return redirect(art) # shortcut to object's get_absolute_url()
 			# return HttpResponseRedirect(site.get_absolute_url())
 		return render(request, 'met/art_new.html', {'form': form})
@@ -102,40 +106,39 @@ class ArtUpdateView(generic.UpdateView):
 
 	def form_valid(self, form):
 		art = form.save(commit=False)
-		# site.updated_by = self.request.user
-		# site.date_updated = timezone.now()
 		art.save()
 
-		# If any existing country/areas are not in updated list, delete them
+		# If any existing artists are not in updated list, delete them
 		new_ids = []
 		old_ids = ArtworkArtist.objects\
 			.values_list('artist_id', flat=True)\
 			.filter(artwork_id=art.artwork_id)
 
-		# New artist list
-		new_artists = form.cleaned_data['artists']
+			#DELETE
+		for old_id in old_ids:
+			# if old_id in new_ids:
+			# 	continue
+			# else:
+			ArtworkArtist.objects \
+				.filter(artwork_id=art.artwork_id, artist_id=old_id) \
+				.delete()
 
-		# Insert new unmatched country entries
+
+		# New artist list
+		new_artists = form.cleaned_data['artist']
+
+		# Insert new unmatched artist entries        #throw away current set and replace with new set 
+		i = 0
 		for artist in new_artists:
 			new_id = artist.artist_id
 			new_ids.append(new_id)
-			if new_id in old_ids:
-				continue
-			else:
-				ArtworkArtist.objects \
-					.create(artwork=art, artist=artist)
-
-		# Delete old unmatched country entries
-		for old_id in old_ids:
-			if old_id in new_ids:
-				continue
-			else:
-				ArtworkArtist.objects \
-					.filter(artwork_id=art.artwork_id, artist_id=old_id) \
-					.delete()
-
+			# if new_id in old_ids:
+			# 	continue
+			# else:
+			ArtworkArtist.objects \
+				.create(artwork=art, artist=artist,  artwork_artist_index=i)
+			i +=1 
 		return HttpResponseRedirect(art.get_absolute_url())
-		# return redirect('heritagesites/site_detail', pk=site.pk)
 
 @method_decorator(login_required, name='dispatch')
 class ArtDeleteView(generic.DeleteView):
@@ -160,11 +163,6 @@ class ArtDeleteView(generic.DeleteView):
 		self.object.delete()
 
 		return HttpResponseRedirect(self.get_success_url())		
-
-
-
-
-
 
 
 

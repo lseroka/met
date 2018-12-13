@@ -11,6 +11,7 @@ urlpatterns = [
 	path('art/<int:pk>/delete/', views.ArtDeleteView.as_view(), name='art_delete'),
 	path('art/<int:pk>/update/', views.ArtUpdateView.as_view(), name='art_update'),
 path('art_filter/', views.ArtFilterView.as_view(), name='art_filter'),
+
 ]
 
 
