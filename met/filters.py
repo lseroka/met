@@ -1,5 +1,5 @@
 import django_filters
-from met.models import Artwork, City, Country, Region, Department, ArtworkType, Classification
+from met.models import Artwork, Artist, City, Country, Region, Department, ArtworkType, Classification
 
 
 class ArtworkFilter(django_filters.FilterSet):
@@ -8,6 +8,14 @@ class ArtworkFilter(django_filters.FilterSet):
 		label='Artwork Title',
 		lookup_expr='icontains'
 	)
+
+	artist = django_filters.ModelChoiceFilter(
+	field_name='artist',
+	label='Artist',
+	queryset = Artist.objects.all().order_by('artist_display_name'),
+	lookup_expr='exact'
+	) 
+
 
 	art_type = django_filters.ModelChoiceFilter(
 		field_name='artwork_type',

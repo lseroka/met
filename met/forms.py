@@ -1,7 +1,7 @@
 from django import forms
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
-from met.models import Artwork
+from met.models import Artwork, Artist
 
 class ArtworkForm(forms.ModelForm):
 	class Meta:

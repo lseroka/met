@@ -109,6 +109,14 @@ class Artwork(models.Model):
     def get_absolute_url(self):
         return reverse('art_detail', kwargs={'pk': self.pk})
 
+    def artist_display(self):
+        """Create a string for country_area. This is required to display in the Admin view."""
+        return ', '.join(
+            artist.artist_display_name for artist in self.artist.all()[:25])
+
+    artist_display.short_description = 'Artist'
+
+
     @property
     def region_names(self):
         """
@@ -200,33 +208,42 @@ class Artwork(models.Model):
     @property
     def artist_names(self):
         """
-        Returns a list of UNSD subregions (names only) associated with a Heritage Site.
-        Note that not all Heritage Sites are associated with a subregion. In such cases the
+        Returns a list of artists associated with a piece of artwork.
+        Note that not all Artworks are  associated with an artist. In such cases the
         Queryset will return as <QuerySet [None]> and the list will need to be checked for
         None or a TypeError (sequence item 0: expected str instance, NoneType found) runtime
         error will be thrown.
         :return: string
         """
-
-        # Add code that uses self to retrieve a QuerySet, then loops over it building a list of
-        # sub region names, before returning a comma-delimited string of names using the string
-        # join method.
+        #IN FUTURE ADD SO THAT DISPLAYS ARTIST (ROLE)
         
         artwork = self.artist.all().order_by('artist_display_name')
 
         artists = []
 
         for each in artwork:
-            artist = each.artist.artist_name
+            artist = each.artist_display_name
             if artist is None:
                 continue
             if artist not in artists:
-                artists.append(country) 
+                artists.append(artist) 
 
         return ', '.join(artists)
 
 
+        # x = ArtworkArtist.objects.select_related('artist_role').values('artist__artist_display_name', 'artist_role__artist_role').order_by('artist__artist_display_name')
+        # art = []
+        # for each in x:
+        #     artist = each.artist.artist_display_name
+        #     if artist is None:
+        #         continue
+        #     role = each.artist_role
 
+        #     artist_and_role = ''.join([artist, ' (', role, ')'])
+        #     if artist_and_role not in art:
+        #         art.append(artist_and_role)
+
+        # return ', '.join(art)    
 
 
 
