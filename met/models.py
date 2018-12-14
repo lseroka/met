@@ -57,10 +57,10 @@ class ArtworkAttribution(models.Model):
 
 class ArtworkArtist(models.Model):
     artwork_artist_id = models.AutoField(primary_key=True)
-    artwork = models.ForeignKey('Artwork', on_delete=models.CASCADE, blank=True, null=True)
+    artwork = models.ForeignKey('Artwork', on_delete=models.CASCADE, blank=True)
     artwork_attribution = models.ForeignKey('ArtworkAttribution', models.DO_NOTHING, blank=True, null=True)
     artwork_artist_index = models.IntegerField()
-    artist = models.ForeignKey('Artist', on_delete=models.CASCADE, blank=True, null=True)
+    artist = models.ForeignKey('Artist', on_delete=models.CASCADE, blank=True)
     artist_role = models.ForeignKey('ArtistRole', on_delete=models.CASCADE, blank=True, null=True)
 
     class Meta:
@@ -93,7 +93,7 @@ class Artwork(models.Model):
     rights_and_reproduction = models.CharField(max_length=255, blank=True, null=True)
     repository = models.ForeignKey('Repository', on_delete=models.PROTECT, blank=True, null=True)
 
-    artist = models.ManyToManyField(Artist, through = 'ArtworkArtist')
+    artist = models.ManyToManyField(Artist, through = 'ArtworkArtist', blank=True)
 
     class Meta:
         managed = False
@@ -119,17 +119,6 @@ class Artwork(models.Model):
 
     @property
     def region_names(self):
-        """
-        Returns a list of UNSD regions (names only) associated with a Heritage Site.
-            Note that not all Heritage Sites are associated with a region. In such cases the
-            Queryset will return as <QuerySet [None]> and the list will need to be checked for
-            None or a TypeError (sequence item 0: expected str instance, NoneType found) runtime
-            error will be thrown.
-            :return: string
-        """
-
-        # Add code that uses self to retrieve a QuerySet composed of regions, then loops over it
-        # building a list of region names, before returning a comma-delimited string of names.
         artwork = self.artwork.all().order_by('region__region_name')
 
 
@@ -146,18 +135,6 @@ class Artwork(models.Model):
 
     @property
     def country_names(self):
-        """
-        Returns a list of UNSD subregions (names only) associated with a Heritage Site.
-        Note that not all Heritage Sites are associated with a subregion. In such cases the
-        Queryset will return as <QuerySet [None]> and the list will need to be checked for
-        None or a TypeError (sequence item 0: expected str instance, NoneType found) runtime
-        error will be thrown.
-        :return: string
-        """
-
-        # Add code that uses self to retrieve a QuerySet, then loops over it building a list of
-        # sub region names, before returning a comma-delimited string of names using the string
-        # join method.
         
         artwork = self.artwork.all().order_by('country__country_name')
 
@@ -176,18 +153,7 @@ class Artwork(models.Model):
 
     @property
     def city_names(self):
-        """
-        Returns a list of UNSD intermediate regions (names only) associated with a Heritage Site.
-        Note that not all Heritage Sites are associated with an intermediate region. In such
-        cases the Queryset will return as <QuerySet [None]> and the list will need to be
-        checked for None or a TypeError (sequence item 0: expected str instance, NoneType found)
-        runtime error will be thrown.
-        :return: string
-        """
 
-        # Add code that uses self to retrieve a QuerySet, then loops over it building a list of
-        # intermediate region names, before returning a comma-delimited string of names using the
-        # string join method.
         artwork = self.artwork.all().order_by('city__city_name')
 
         cities = []
@@ -244,12 +210,6 @@ class Artwork(models.Model):
         #         art.append(artist_and_role)
 
         # return ', '.join(art)    
-
-
-
-
-
-
 
 
 class ArtworkType(models.Model):
@@ -368,7 +328,6 @@ class Repository(models.Model):
 
 
 
-#NEED TO ADD DECORATORS. ADD ARTISTS TO TO EACH TITLE; WILL BE COMMA SEPARATED WITH THEIR ROLE AND NATIONALITY IN ()S) 
 
 
 

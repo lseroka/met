@@ -76,12 +76,16 @@ class ArtCreateView(generic.View):
 			art = form.save(commit=False)
 			art.save()
 			i = 0
-			for artist in form.cleaned_data['artist']:
-
-				ArtworkArtist.objects.create(artwork=art, artist=artist, artwork_artist_index=i)
-				i+=1
 			
-			return redirect(art) # shortcut to object's get_absolute_url()
+			if form.cleaned_data['artist'] in form_class:
+				for artist in form.cleaned_data['artist']:
+
+					ArtworkArtist.objects.create(artwork=art, artist=artist, artwork_artist_index=i)
+					i+=1
+			
+				return redirect(art) # shortcut to object's get_absolute_url()
+			else:
+				return redirect(art)
 			# return HttpResponseRedirect(site.get_absolute_url())
 		return render(request, 'met/art_new.html', {'form': form})
 
@@ -108,7 +112,7 @@ class ArtUpdateView(generic.UpdateView):
 		art = form.save(commit=False)
 		art.save()
 
-		# If any existing artists are not in updated list, delete them
+		
 		new_ids = []
 		old_ids = ArtworkArtist.objects\
 			.values_list('artist_id', flat=True)\
@@ -127,7 +131,7 @@ class ArtUpdateView(generic.UpdateView):
 		# New artist list
 		new_artists = form.cleaned_data['artist']
 
-		# Insert new unmatched artist entries        #throw away current set and replace with new set 
+		# Insert new artist entries        #throw away current set and replace with new set 
 		i = 0
 		for artist in new_artists:
 			new_id = artist.artist_id
