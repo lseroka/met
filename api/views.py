@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from met.models import Artist, ArtworkArtist
+from met.models import Artist 
 from api.serializers import ArtistSerializer
 from rest_framework import generics, permissions, status, viewsets
 from rest_framework.response import Response
@@ -9,7 +9,7 @@ class ArtistViewSet(viewsets.ModelViewSet):
 	"""
 	This ViewSet provides both 'list' and 'detail' views.
 	"""
-	queryset = ArtworkArtist.objects.select_related('artist', 'artist_role', 'artwork', 'artwork_attribution').order_by('artist__artist_display_name')
+	queryset = Artist.objects.all().order_by('artist_display_name')
 	serializer_class = ArtistSerializer
 	permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
@@ -25,13 +25,13 @@ class ArtistViewSet(viewsets.ModelViewSet):
 
 
 class ArtistListAPIView(generics.ListCreateAPIView):
-	queryset = ArtworkArtist.objects.select_related('artist', 'artist_role', 'artwork', 'artwork_attribution').order_by('artist__artist_display_name')
+	queryset = Artist.objects.all().order_by('artist_display_name')
 	serializer_class = ArtistSerializer
 	permission_classes = (permissions.DjangoModelPermissionsOrAnonReadOnly,)
 
 
 class ArtistDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
-	queryset = ArtworkArtist.objects.select_related('artist', 'artist_role', 'artwork', 'artwork_attribution').order_by('artist__artist_display_name')
+	queryset = Artist.objects.all().order_by('artist_display_name')
 	serializer_class = ArtistSerializer
 	permission_classes = (permissions.DjangoModelPermissionsOrAnonReadOnly,)
 

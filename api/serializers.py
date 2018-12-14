@@ -4,7 +4,7 @@ from rest_framework import response, serializers, status
 
 
 class ArtistSerializer(serializers.ModelSerializer):
-    artist = serializers.CharField(
+    artist_display_name = serializers.CharField(
         allow_blank=False,
         max_length = 225)
 
