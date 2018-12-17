@@ -52,12 +52,6 @@ class ArtDetailView(generic.DetailView):
 		artwork = super().get_object()
 		return artwork
 
-
-
-
-
-
-
 @method_decorator(login_required, name='dispatch')
 class ArtCreateView(generic.View):
 	model = Artwork
@@ -76,16 +70,12 @@ class ArtCreateView(generic.View):
 			art = form.save(commit=False)
 			art.save()
 			i = 0
-			
-			if form.cleaned_data['artist'] in form_class:
-				for artist in form.cleaned_data['artist']:
 
-					ArtworkArtist.objects.create(artwork=art, artist=artist, artwork_artist_index=i)
-					i+=1
-			
-				return redirect(art) # shortcut to object's get_absolute_url()
-			else:
-				return redirect(art)
+			for artist in form.cleaned_data['artist']:
+				ArtworkArtist.objects.create(artwork=art, artist=artist, artwork_artist_index=i)
+				i += 1
+			return redirect(art) # shortcut to object's get_absolute_url()
+
 			# return HttpResponseRedirect(site.get_absolute_url())
 		return render(request, 'met/art_new.html', {'form': form})
 

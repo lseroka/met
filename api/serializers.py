@@ -30,7 +30,7 @@ class ArtistSerializer(serializers.ModelSerializer):
 
         instance.save()
 
-     
+        return instance
 
 
     
