@@ -5,7 +5,7 @@ from rest_framework_swagger.views import get_swagger_view
 from api.views import ArtistViewSet
 
 API_TITLE = 'met API'
-API_DESC = 'A web API for creating, modifying and deleting Metropolitan Museum of Art.'
+API_DESC = 'A web API for creating, modifying and deleting Met artists.'
 
 docs_view = include_docs_urls(
 	title=API_TITLE,
@@ -24,7 +24,7 @@ schema_view = get_schema_view(
 '''
 
 router = SimpleRouter()
-router.register(r'sites', ArtistViewSet, base_name='sites')
+router.register(r'artists', ArtistViewSet, base_name='artists')
 # urlpatterns = router.urls
 
 # The API URLs are now determined automatically by the router.
